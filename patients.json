@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "fullName": "Petrenko Oleksandr Ivanovych",
+    "address": "15 Khreshchatyk St., Kyiv, Ukraine",
+    "phoneNumber": "+380671234567",
+    "medicalRecordNumber": 202401,
+    "medicalDiagnosis": "Hypertension",
+    "lastDateVisit": "10.12.2024",
+    "currentYearVisitCount": 4
+  },
+  {
+    "id": 2,
+    "fullName": "Kovalchuk Maryna Serhiivna",
+    "address": "10 Doroshenko St., Lviv, Ukraine",
+    "phoneNumber": "+380931112233",
+    "medicalRecordNumber": 202402,
+    "medicalDiagnosis": "Bronchial asthma",
+    "lastDateVisit": "04.11.2024",
+    "currentYearVisitCount": 2
+  },
+  {
+    "id": 3,
+    "fullName": "Ivanenko Andrii Vasylovych",
+    "address": "5 Deribasovskaya St., Odesa, Ukraine",
+    "phoneNumber": "+380503332211",
+    "medicalRecordNumber": 202403,
+    "medicalDiagnosis": "Gastric ulcer",
+    "lastDateVisit": "20.01.2025",
+    "currentYearVisitCount": 3
+  },
+  {
+    "id": 4,
+    "fullName": "Vasilenko Natalia Petrovna",
+    "address": "22 Sumska St., Kharkiv, Ukraine",
+    "phoneNumber": "+380671234890",
+    "medicalRecordNumber": 202404,
+    "medicalDiagnosis": "Type 2 diabetes mellitus",
+    "lastDateVisit": "24.02.2025",
+    "currentYearVisitCount": 9
+  },
+  {
+    "id": 5,
+    "fullName": "Melnyk Volodymyr Hryhorovych",
+    "address": "30, Dmytro Yavornytskyi ave.",
+    "phoneNumber": "+380951112244",
+    "medicalRecordNumber": 202405,
+    "medicalDiagnosis": "Osteochondrosis of the cervical spine",
+    "lastDateVisit": "02.03.2025",
+    "currentYearVisitCount": 9
+  },
+  {
+    "id": 6,
+    "fullName": "Shevchenko Oleg Mykolaiovych",
+    "address": "8 Haharina St., Dnipro, Ukraine",
+    "phoneNumber": "+380661223344",
+    "medicalRecordNumber": 202406,
+    "medicalDiagnosis": "Hypertension",
+    "lastDateVisit": "15.03.2025",
+    "currentYearVisitCount": 5
+  },
+  {
+    "id": 7,
+    "fullName": "Tkachenko Inna Volodymyrivna",
+    "address": "12 Peremohy Ave., Zaporizhzhia, Ukraine",
+    "phoneNumber": "+380931234567",
+    "medicalRecordNumber": 1,
+    "medicalDiagnosis": "Bronchial asthma",
+    "lastDateVisit": "28.02.2025",
+    "currentYearVisitCount": 3
+  },
+  {
+    "id": 8,
+    "fullName": "Pavlenko Serhii Oleksiiovych",
+    "address": "19 Volodymyrska St., Kyiv, Ukraine",
+    "phoneNumber": "+380991112233",
+    "medicalRecordNumber": 202408,
+    "medicalDiagnosis": "Type 2 diabetes mellitus",
+    "lastDateVisit": "05.01.2025",
+    "currentYearVisitCount": 7
+  },
+  {
+    "id": 9,
+    "fullName": "Kryvonos Bohdan Viktorovych",
+    "address": "45 Shevchenka St., Lviv, Ukraine",
+    "phoneNumber": "+380671223355",
+    "medicalRecordNumber": 202409,
+    "medicalDiagnosis": "Gastric ulcer",
+    "lastDateVisit": "12.02.2025",
+    "currentYearVisitCount": 6
+  },
+  {
+    "id": 10,
+    "fullName": "Bondarenko Kateryna Mykolaivna",
+    "address": "6 Bohdana Khmelnytskoho St., Odesa, Ukraine",
+    "phoneNumber": "+380503445566",
+    "medicalRecordNumber": 202410,
+    "medicalDiagnosis": "Hypertension",
+    "lastDateVisit": "01.04.2025",
+    "currentYearVisitCount": 4
+  }
+]
