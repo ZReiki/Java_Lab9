@@ -18,6 +18,7 @@ import main.service.PatientRepositoryTextImpl;
 import main.service.PatientService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class PatientController {
@@ -28,6 +29,7 @@ public class PatientController {
     private final PatientRepositoryTextImpl txtFileService = new PatientRepositoryTextImpl();
     private final PatientRepositoryBinaryImpl binaryFileService = new PatientRepositoryBinaryImpl();
     private final PatientRepositoryJSONImpl jsonFileService = new PatientRepositoryJSONImpl();
+    private final Map<String, List<Patient>> mapPatients = service.createMap(patients);
 
     @FXML
     private ChoiceBox<String> operationsChoiceBox;
@@ -83,6 +85,7 @@ public class PatientController {
         }
     }
 
+    // Choose the file
     public String chosenFile(String title){
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle(title);
@@ -131,7 +134,10 @@ public class PatientController {
 
     public void delete(){
         Patient patientForDelete = patientTable.getSelectionModel().getSelectedItem();
-        if(patientForDelete == null) return;
+        if(patientForDelete == null){
+            printer.showError("No patient selected");
+            return;
+        }
         service.deletePatientFromList(patients, patientForDelete.getId());
     }
 
@@ -146,29 +152,59 @@ public class PatientController {
                 """);
     }
 
+    // Map: Choose the key
+    public String mapKeyChoose(){
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Choose Patient Diagnosis");
+        dialog.setHeaderText("Choose the patient diagnose");
+
+        ButtonType okButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        ComboBox<String> choice = new ComboBox<>();
+        choice.getItems().addAll(mapPatients.keySet());
+
+        grid.add(new Label("Diagnose"), 0, 0);
+        grid.add(choice, 1, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == okButtonType) {
+                return choice.getValue();
+            }
+            return null;
+        });
+
+        Optional<String> result = dialog.showAndWait();
+        return result.orElse(null);
+    }
+
     // Controller
     public void runOperation() {
         String operation = operationsChoiceBox.getValue();
         if(operation == null) return;
 
         switch (operation) {
-            case "1. List of Patients with the specified diagnosis" ->{
-                updateTable(service.listOfPatientsWithTheSpecifiedDiagnosis(patients, input.enterText("Diagnose")));
-            }
-            case "2. List of Patients whose medical record number is within the specified interval" ->{
-                updateTable(service.listOfPatientsWhoseMedicalRecordNumberIsWithinTheSpecifiedInterval(patients, input.enterInterval()));
-            }
-            case "3. Quantity and list of Patients whose phone number begins with the specified digit" ->{
-                updateTable(service.quantityAndListOfPatientsWhosePhoneNumberBeginsWithTheSpecifiedDigit(patients, input.enterText("First phone number")));
-            }
-            case "4. The list of patients in descending order of the number of visits in the current year. If it is the same, in ascending order of medical record numbers" ->{
-                updateTable(service.listOfPatientsByCurrentYearVisitCount(patients));
-            }
-            case "5. Patient's medical record number by id" ->{
-                printer.showText("The medical record number of the person", String.valueOf(service.findPatientById(patients, input.enterInteger("Id"))));
-            }
-            case "6. A list of patients with this diagnosis in ascending order of the medical record number" ->{}
-            case "7. For each patient diagnosis with the highest number of visits" ->{}
+            case "1. List of Patients with the specified diagnosis" ->
+                    updateTable(service.listOfPatientsWithTheSpecifiedDiagnosis(patients, input.enterText("Diagnose")));
+            case "2. List of Patients whose medical record number is within the specified interval" ->
+                    updateTable(service.listOfPatientsWhoseMedicalRecordNumberIsWithinTheSpecifiedInterval(patients, input.enterInterval()));
+            case "3. Quantity and list of Patients whose phone number begins with the specified digit" ->
+                    updateTable(service.quantityAndListOfPatientsWhosePhoneNumberBeginsWithTheSpecifiedDigit(patients, input.enterText("First phone number")));
+            case "4. The list of patients in descending order of the number of visits in the current year. If it is the same, in ascending order of medical record numbers" ->
+                    updateTable(service.listOfPatientsByCurrentYearVisitCount(patients));
+            case "5. Patient's medical record number by id" ->
+                    printer.showText("The medical record number of the person", String.valueOf(service.findPatientById(patients, input.enterInteger("Id"))));
+            case "6. A list of patients with this diagnosis in ascending order of the medical record number" ->
+                    updateTable(service.findValueByKey(mapPatients, mapKeyChoose()));
+            case "7. For each patient diagnosis with the highest number of visits" ->
+                    updateTable(service.findValueByKey(patients, mapKeyChoose()));
         }
     }
 }

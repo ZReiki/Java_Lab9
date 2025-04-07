@@ -14,19 +14,19 @@ public class PatientService {
     // List operations
     public List<Patient> listOfPatientsWithTheSpecifiedDiagnosis(List<Patient> patients, String diagnosis){
         return patients.stream()
-                .filter(patient -> patient.getMedicalDiagnosis().equals(diagnosis))
+                .filter(p -> p.getMedicalDiagnosis().equals(diagnosis))
                 .collect(Collectors.toList());
     }
 
     public List<Patient> listOfPatientsWhoseMedicalRecordNumberIsWithinTheSpecifiedInterval(List<Patient> patients, Pair<Integer, Integer> interval){
         return patients.stream()
-                .filter(patient -> patient.getMedicalRecordNumber() >= interval.getKey() && patient.getMedicalRecordNumber() <= interval.getValue())
+                .filter(p -> p.getMedicalRecordNumber() >= interval.getKey() && p.getMedicalRecordNumber() <= interval.getValue())
                 .collect(Collectors.toList());
     }
 
     public List<Patient> quantityAndListOfPatientsWhosePhoneNumberBeginsWithTheSpecifiedDigit(List<Patient> patients, String phoneNumberDigit){
         return patients.stream()
-                .filter(patient -> patient.getPhoneNumber().substring(4, 5).equals(phoneNumberDigit))
+                .filter(p -> p.getPhoneNumber().substring(4, 5).equals(phoneNumberDigit))
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +41,7 @@ public class PatientService {
     }
 
     public void deletePatientFromList(List<Patient> patients, int id){
-        patients.removeIf(patient -> patient.getId() == id);
+        patients.removeIf(p -> p.getId() == id);
     }
 
     //Список пацієнтів у порядку спадання кількості візитів у поточному році. Якщо вона
@@ -55,7 +55,7 @@ public class PatientService {
 
     public int findPatientById(List<Patient> patients, int id){
         return patients.stream()
-                .filter(patient -> patient.getId() == id)
+                .filter(p -> p.getId() == id)
                 .map(Patient::getMedicalRecordNumber)
                 .findFirst()
                 .orElse(-1);
@@ -67,11 +67,25 @@ public class PatientService {
                 .collect(Collectors.groupingBy(Patient::getMedicalDiagnosis));
     }
 
-    public Map<String, List<Patient>> mapOfPatientsByDiagnosisWithMedicalRecordNumber(List<Patient> patients){
-        return createMap(patients).entrySet().stream()
+    public List<Patient> findValueByKey(Map<String, List<Patient>> map, String key){
+            Map<String, List<Patient>> p = mapOfPatientsByDiagnosisWithMedicalRecordNumber(map);
+            return p.entrySet().stream()
+                    .filter(t -> t.getKey().equals(key))
+                    .map(Map.Entry::getValue)
+                    .findFirst()
+                    .orElse(Collections.emptyList());
+    }
+
+    public List<Patient> findValueByKey(List<Patient> patients, String key){
+        Map<String, Patient> p = mapOfPatientsByDiagnosisWithMaxVisitCount(patients);
+        return p.entrySet().stream().filter(t -> t.getKey().equals(key)).map(Map.Entry::getValue).findFirst().stream().toList();
+    }
+
+    public Map<String, List<Patient>> mapOfPatientsByDiagnosisWithMedicalRecordNumber(Map<String, List<Patient>> patients){
+        return patients.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> entry.getValue().stream()
+                        en -> en.getValue().stream()
                                 .sorted(Comparator.comparingInt(Patient::getMedicalRecordNumber))
                                 .collect(Collectors.toList())
                 ));
@@ -81,7 +95,7 @@ public class PatientService {
         return patients.stream()
                 .collect(Collectors.toMap(
                         Patient::getMedicalDiagnosis,
-                        patient -> patient,
+                        p -> p,
                         (existing, replacement) -> existing.getCurrentYearVisitCount() > replacement.getCurrentYearVisitCount() ? existing : replacement
                 ));
     }
